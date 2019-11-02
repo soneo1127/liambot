@@ -16,11 +16,11 @@ from liam_chatbot import interact
 app = Flask(__name__)
 
 #環境変数取得
-YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
-YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
+# YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
+# YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
 
-line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
-handler = WebhookHandler(YOUR_CHANNEL_SECRET)
+line_bot_api = LineBotApi("yrWOodcO6KND8OjvD/HdoyM8bbJD3MlwYyArbJelDXaOEpBvHoZ9FOx/SYTYy3xNJNLjl2VQt7HkPE9U3YD/KS32ZXUbYlpyqzXGmXW91oWQ4jq+Y8g64IFLS6u81P/5rOeaEJaIGiYl0732KUTMHAdB04t89/1O/w1cDnyilFU=")
+handler = WebhookHandler("052e52425012cf50b9b386ffc004a61c")
 
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -39,12 +39,12 @@ def callback():
 
     return 'OK'
 
-history = []
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    reply, history = interact.reply(event.message.text, history)
-    line_bot_api.reply_message(
-        event.reply_token,
+    reply = interact.reply(event.message.text)
+    print(reply)
+    line_bot_api.push_message(
+        event.source.user_id,
         TextSendMessage(text = reply))
 
 
